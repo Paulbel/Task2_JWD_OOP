@@ -6,21 +6,23 @@ import dao.ParserDAO;
 import dao.exception.DAOException;
 import entity.Document;
 import service.ParserService;
+import service.exception.ServiceException;
 
 import java.io.IOException;
 
 
 public class ServiceImpl implements ParserService {
     @Override
-    public Document parseFile(String path) {
+    public Document parseFile(String path) throws ServiceException {
         DAOFactory factory = DAOFactory.getInstance();
         ParserDAO parserDAO = factory.getDomParser();
+        Document document;
         try {
-            return parserDAO.parse(path);
+            document =  parserDAO.parse(path);
         } catch (DAOException e) {
-            System.out.print("Something Wrong in DAO");
+            throw new ServiceException();
         }
-        return null;
+        return document;
     }
 
 }
