@@ -34,12 +34,26 @@ public class Document {
     @Override
     public String toString() {
         StringBuilder line = new StringBuilder();
-        line = printInfo(rootNode, line, 0);
+        line = printDocumentInfo(rootNode, line, 0);
         return String.valueOf(line);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Document)) return false;
 
-    private StringBuilder printInfo(Node node, StringBuilder line, int count) {
+        Document document = (Document) o;
+
+        return rootNode != null ? rootNode.equals(document.rootNode) : document.rootNode == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return rootNode != null ? rootNode.hashCode() : 0;
+    }
+
+    private StringBuilder printDocumentInfo(Node node, StringBuilder line, int count) {
         boolean addedNumeration = false;
         List<Node> childNodes = node.getChildList();
         if (childNodes.size() == 0) {
@@ -52,14 +66,12 @@ public class Document {
                         line.append(count);
                         line.append(". ");
                         addedNumeration = true;
-
                     } else {
                         line.append("- ");
                     }
                 }
                 count++;
-                printInfo(childNode, line, count);
-
+                printDocumentInfo(childNode, line, count);
             }
             if (addedNumeration){
                 line.append("\n");

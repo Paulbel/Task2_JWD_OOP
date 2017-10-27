@@ -73,8 +73,9 @@ public class DOMParser implements ParserDAO {
                 parseBuffer(document, node, wholeWordMatcher, closeMatcher, tagSet);
             }
             if (tag.equals(closeMatcher.group(ParserConstant.CLOSE_TAG_INDEX))) {
-                closeMatcher.find();
-                tagSet.remove(tag);
+                if(closeMatcher.find()){
+                    tagSet.remove(tag);
+                }
             }
         }
     }

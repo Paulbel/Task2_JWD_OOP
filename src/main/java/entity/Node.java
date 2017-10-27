@@ -84,4 +84,25 @@ public class Node {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Node)) return false;
+
+        Node node = (Node) o;
+
+        if (attribute != null ? !attribute.equals(node.attribute) : node.attribute != null) return false;
+        if (tag != null ? !tag.equals(node.tag) : node.tag != null) return false;
+        if (childList != null ? !childList.equals(node.childList) : node.childList != null) return false;
+        return value != null ? value.equals(node.value) : node.value == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = attribute != null ? attribute.hashCode() : 0;
+        result = 31 * result + (tag != null ? tag.hashCode() : 0);
+        result = 31 * result + (childList != null ? childList.hashCode() : 0);
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        return result;
+    }
 }

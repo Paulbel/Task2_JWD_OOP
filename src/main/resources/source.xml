@@ -1,8 +1,8 @@
 <catalogue>
     <glasses id="1a">
         <model>Agio</model>
-        <leftDioptr>2.25</leftDioptr>
-        <rightDioptr>2.25</rightDioptr>
+        <leftDioptr>+2.0</leftDioptr>
+        <rightDioptr>+2.25</rightDioptr>
         <price>$4</price>
     </glasses>
     <glasses id="2a">
