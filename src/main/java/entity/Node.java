@@ -1,4 +1,4 @@
-package parser.domParser;
+package entity;
 
 import java.util.*;
 

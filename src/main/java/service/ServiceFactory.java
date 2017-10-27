@@ -1,18 +1,18 @@
 package service;
 
 
-import service.impl.GlassesService;
+import service.impl.ServiceImpl;
 
 public final class ServiceFactory {
     private static final ServiceFactory instance = new ServiceFactory();
 
-    private final ProductService productService = new GlassesService();
+    private final ParserService parserService = new ServiceImpl();
 
     private ServiceFactory() {
     }
 
-    public ProductService getApplianceService() {
-        return productService;
+    public ParserService getParserService() {
+        return parserService;
     }
 
     public static ServiceFactory getInstance() {
