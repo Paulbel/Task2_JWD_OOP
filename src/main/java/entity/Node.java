@@ -7,23 +7,18 @@ public class Node {
     private String tag;
     private List<Node> childList;
 
-
     public void addAttribute(String attribute, String value) {
         this.attribute.put(attribute, value);
     }
-
-
 
     public String getValue() {
         return value;
     }
 
-
     public void addNode(Node node) {
 
         childList.add(node);
     }
-
 
 
     public void setAttribute(Map<String, String> attribute) {
@@ -54,7 +49,7 @@ public class Node {
     }
 
 
-    public Node getChildByTag(String tag){
+    public Node getChildByTag(String tag) {
         for (Node node : childList) {
             if (node.tag.equals(tag)) {
                 return node;

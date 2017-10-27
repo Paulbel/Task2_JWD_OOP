@@ -10,9 +10,6 @@ import java.io.IOException;
 
 
 public class ServiceImpl implements ParserService {
-
-
-
     @Override
     public Document parseFile(String path) {
         DAOFactory factory = DAOFactory.getInstance();

@@ -22,7 +22,6 @@ public class Document {
     }
 
     private void findNodesByTag(List<Node> list, Node parentNode, String tag) {
-        //System.out.println(parentNode);
         if (parentNode.getTag().equals(tag)) {
             list.add(parentNode);
         }
@@ -69,5 +68,8 @@ public class Document {
         }
         return line;
     }
+
+
+
 
 }
