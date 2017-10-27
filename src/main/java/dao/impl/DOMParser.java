@@ -2,27 +2,37 @@ package dao.impl;
 
 import constant.ParserConstant;
 import dao.ParserDAO;
+import dao.exception.DAOException;
 import dao.exception.IncorrectXMLFileException;
 import entity.Document;
 import entity.Node;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 
 public class DOMParser implements ParserDAO {
 
     @Override
-    public Document parse(String path) throws IOException {
+    public Document parse(String path) throws DAOException {
         File file = new File(path);
-        FileReader fileReader = new FileReader(file);
-        char[] fileContent = new char[(int) file.length()];
-        fileReader.read(fileContent);
-        String content = new String(fileContent);
-        return parseFile(content);
+        try {
+            FileReader fileReader = new FileReader(file);
+            char[] fileContent = new char[(int) file.length()];
+            if (fileReader.read(fileContent) == -1) {
+                throw new DAOException();
+            }
+            String content = new String(fileContent);
+            return parseFile(content);
+        } catch (FileNotFoundException e) {
+            throw new DAOException();
+        } catch (IOException e) {
+            throw new DAOException();
+        }
     }
 
     private Document parseFile(CharSequence content) {
@@ -36,16 +46,16 @@ public class DOMParser implements ParserDAO {
                 e.printStackTrace();
             }
         }
-        Map<String, Node> tagMap = new HashMap<String, Node>();
-        parseBuffer(document, null, wholeWordMatcher, closeMatcher, tagMap);
+        Set<String> tagSet = new HashSet<String>();
+        parseBuffer(document, null, wholeWordMatcher, closeMatcher, tagSet);
         return document;
     }
 
-    private void parseBuffer(Document document, Node rootNode, Matcher wholeWordMatcher, Matcher closeMatcher, Map<String, Node> map) {
+    private void parseBuffer(Document document, Node rootNode, Matcher wholeWordMatcher, Matcher closeMatcher, Set<String> tagSet) {
         if (wholeWordMatcher.find()) {
             String tag = wholeWordMatcher.group(ParserConstant.OPEN_TAG_INDEX);
             Node node = new Node(tag);
-            map.put(tag, node);
+            tagSet.add(tag);
             if (rootNode == null) {
                 document.setRootNode(node);
             } else {
@@ -59,12 +69,12 @@ public class DOMParser implements ParserDAO {
             if (value != null) {
                 node.setValue(value);
             }
-            while (!map.containsKey(closeMatcher.group(1))) {
-                parseBuffer(document, node, wholeWordMatcher, closeMatcher, map);
+            while (!tagSet.contains(closeMatcher.group(ParserConstant.CLOSE_TAG_INDEX))) {
+                parseBuffer(document, node, wholeWordMatcher, closeMatcher, tagSet);
             }
-            if (tag.equals(closeMatcher.group(1))) {
+            if (tag.equals(closeMatcher.group(ParserConstant.CLOSE_TAG_INDEX))) {
                 closeMatcher.find();
-                map.remove(tag);
+                tagSet.remove(tag);
             }
         }
     }

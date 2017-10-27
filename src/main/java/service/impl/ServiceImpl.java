@@ -3,6 +3,7 @@ package service.impl;
 
 import dao.DAOFactory;
 import dao.ParserDAO;
+import dao.exception.DAOException;
 import entity.Document;
 import service.ParserService;
 
@@ -16,8 +17,8 @@ public class ServiceImpl implements ParserService {
         ParserDAO parserDAO = factory.getDomParser();
         try {
             return parserDAO.parse(path);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (DAOException e) {
+            System.out.print("Something Wrong in DAO");
         }
         return null;
     }
